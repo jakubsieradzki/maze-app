@@ -1,0 +1,287 @@
+{
+	"info": {
+		"_postman_id": "6808c3d4-7a78-458b-9969-7e3ad4254289",
+		"name": "maze",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"{{username}}\",\r\n    \"password\": \"{{password}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{service_url}}/users",
+					"host": [
+						"{{service_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const authTokenName = \"X-Auth-Token\"\r",
+							"pm.test(\"Status code is 200 and auth token is set\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.have.header(authTokenName)\r",
+							"});\r",
+							"\r",
+							"const token = pm.response.headers.get(authTokenName)\r",
+							"console.log(\"Setting the token to value: \" + token)\r",
+							"pm.collectionVariables.set(\"access_token\", token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "default"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{service_url}}/login",
+					"host": [
+						"{{service_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create maze",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "X-Auth-Token",
+						"value": "{{access_token}}",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"entrance\": \"A1\",\r\n    \"gridSize\": \"8x8\",\r\n    \"walls\": [\"C1\", \"G1\", \"A2\", \"C2\", \"E2\", \"G2\", \"C3\", \"E3\", \"B4\", \"C4\", \"E4\", \"F4\", \"G4\", \"B5\", \"E5\", \"B6\", \"D6\", \"E6\", \"G6\", \"H6\", \"B7\", \"D7\", \"G7\", \"B8\"]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{service_url}}/maze",
+					"host": [
+						"{{service_url}}"
+					],
+					"path": [
+						"maze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get all user mazes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Auth-Token",
+						"value": "{{access_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{service_url}}/maze",
+					"host": [
+						"{{service_url}}"
+					],
+					"path": [
+						"maze"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get maze solution",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Auth-Token",
+						"value": "{{access_token}}",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{service_url}}/maze/:mazeId/solution?steps=min",
+					"host": [
+						"{{service_url}}"
+					],
+					"path": [
+						"maze",
+						":mazeId",
+						"solution"
+					],
+					"query": [
+						{
+							"key": "steps",
+							"value": "min"
+						}
+					],
+					"variable": [
+						{
+							"key": "mazeId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "service_url",
+			"value": "localhost:8080",
+			"type": "default"
+		},
+		{
+			"key": "username",
+			"value": "some-user",
+			"type": "default"
+		},
+		{
+			"key": "password",
+			"value": "secret123",
+			"type": "default"
+		}
+	]
+}

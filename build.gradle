@@ -1,0 +1,50 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.4'
+    id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+    id 'java'
+    id 'groovy'
+}
+
+group = 'org.challenge'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '17'
+
+repositories {
+    mavenCentral()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.session:spring-session-bom:2021.2.0'
+    }
+}
+
+ext {
+    spockVersion = '2.3-groovy-3.0'
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    implementation 'org.springframework.session:spring-session-core'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'com.h2database:h2'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // spock
+    testImplementation "org.codehaus.groovy:groovy:3.0.13"
+    testImplementation "org.spockframework:spock-core:$spockVersion"
+    testImplementation "org.spockframework:spock-spring:$spockVersion"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
