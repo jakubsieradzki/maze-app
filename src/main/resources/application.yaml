@@ -4,6 +4,9 @@ logging:
     org.springframework.web: INFO
     org.springframework.security: INFO
 
+server:
+  port : ${PORT:8080}
+
 spring:
   datasource:
     url: jdbc:h2:mem:test_h2_db
